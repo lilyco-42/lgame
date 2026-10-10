@@ -116,12 +116,14 @@ impl Control {
 /// 跑一次会话
 ///
 /// `on_step(第几步, 这一步的记录)` 用于实时上报进度（CLI 打印 / MCP 通知）。
+/// 步号用 `u32` 而不是 `usize` —— 它与 [`SessionConfig::max_steps`] 同一个类型，
+/// 调用方不需要为了「这是第几步」做一次转换。
 pub fn run<D, P>(
     driver: &mut D,
     policy: &mut P,
     cfg: &SessionConfig,
     control: &Control,
-    on_step: &mut dyn FnMut(usize, &StepRecord),
+    on_step: &mut dyn FnMut(u32, &StepRecord),
 ) -> Result<SessionOutcome>
 where
     D: Driver,
