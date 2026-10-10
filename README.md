@@ -176,8 +176,10 @@ cargo build --workspace --release
 CI 在 `windows-latest` 与 `ubuntu-latest` 上跑测试与构建。
 Linux 需要 xcap 的系统依赖（见 `.github/workflows/ci.yml`）：
 `pkg-config libclang-dev libxcb1-dev libxcb-randr0-dev libxcb-shm0-dev
-libxcb-xfixes0-dev libxrandr-dev libdbus-1-dev libegl-dev libwayland-dev
-libpipewire-0.3-dev`。
+libxcb-xfixes0-dev libxrandr-dev libdbus-1-dev libegl-dev libgbm-dev libdrm-dev
+libwayland-dev libpipewire-0.3-dev`。
+（`libgbm-dev` 不能少 —— 缺它链接期会报 `unable to find library -lgbm`，
+是 xcap 的 DMABUF 路径带来的。）
 
 `lgame-core` 可以关掉平台相关的屏幕档位，在 Android / headless 上纯逻辑编译：
 

@@ -21,7 +21,9 @@ use lgame_core::embodiment::Embodiment;
 use lgame_core::error::GameError;
 use lgame_core::policy::{self, LlmPolicy, Policy, ReplayPolicy};
 use lgame_core::session::{self, Control, SessionConfig};
-use lgame_core::{ccswitch, targets, ScreenDriver};
+// `Driver` 必须显式导入：`observe` / `execute` 是 trait 方法，
+// 只导入 `ScreenDriver` 只能拿到类型、拿不到方法（E0599）。
+use lgame_core::{ccswitch, targets, Driver, ScreenDriver};
 use lilyco::prelude::*;
 
 use crate::convert::IntoLgame;
