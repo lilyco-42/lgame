@@ -1,0 +1,26 @@
+[package]
+name = "lgame-core"
+description = "AI 控制实体的中间层：观察 → 决策 → 动作。动作空间与躯体无关，游戏只是第一个落地场景。"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+homepage.workspace = true
+authors.workspace = true
+readme = "../README.md"
+keywords = ["ai", "agent", "game", "automation", "embodied"]
+categories = ["games", "api-bindings"]
+
+[dependencies]
+serde = { workspace = true }
+serde_json = { workspace = true }
+ureq = { workspace = true }
+# 屏幕档位（截屏 + 输入注入）——平台相关，Android/headless 关掉即可纯逻辑编译
+image = { workspace = true, optional = true }
+enigo = { workspace = true, optional = true }
+xcap = { workspace = true, optional = true }
+
+[features]
+default = ["screen"]
+screen = ["dep:image", "dep:enigo", "dep:xcap"]

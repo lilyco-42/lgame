@@ -1,0 +1,13 @@
+/target
+
+# 运行产物：截图与轨迹（默认落在 lgame-captures/）
+lgame-captures/
+
+# 编辑器 / 系统
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# 本地实验脚本
+/scratch/

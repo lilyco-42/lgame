@@ -1,0 +1,22 @@
+[package]
+name = "l3d"
+description = "AI 驱动 3D 游戏角色（WASD + 鼠标视角 + 跳跃）的 CLI / TUI / Web / MCP —— lgame 中间层的 3D 躯体档位。"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+homepage.workspace = true
+authors.workspace = true
+readme = "../README.md"
+keywords = ["ai", "agent", "game", "mcp", "fps"]
+categories = ["games", "command-line-utilities"]
+
+[[bin]]
+name = "l3d"
+path = "src/main.rs"
+
+[dependencies]
+# 只依赖工具层：main.rs 就一行 `lgame_tools::run_binary("l3d", "3d")`。
+# lilyco / lgame-core 由 lgame-tools 透出，这里不需要直接依赖。
+lgame-tools = { workspace = true }

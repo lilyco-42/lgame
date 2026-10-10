@@ -1,0 +1,32 @@
+[workspace]
+resolver = "2"
+members = ["lgame-core", "lgame-tools", "l3d", "l2d"]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.75"
+license = "MIT"
+repository = "https://github.com/lilyco-42/lgame"
+homepage = "https://github.com/lilyco-42/lgame"
+authors = ["lilyco-42"]
+
+[workspace.dependencies]
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+image = { version = "0.25", default-features = false, features = ["png", "jpeg"] }
+enigo = "0.6"
+xcap = "0.9"
+ureq = "2.12"
+
+lgame-core = { path = "lgame-core", version = "0.1.0" }
+lgame-tools = { path = "lgame-tools", version = "0.1.0" }
+
+# 守则 2（lyco-hygiene）：git 依赖必须锁 rev/tag，不能锁 branch。
+# 这里锁的是 lilyco 0.3.0 的 `run_registry_with_policy` / `detect_registry_backend`
+# —— crates.io 上的 0.2.3 还没有这两个函数。
+#
+# `features = ["tui", "web"]`：lilyco 默认是 headless（只有 CLI + MCP）。
+# 但「一个 struct 出四端」是本项目对外的主张（见 README / lgame-tools/src/lib.rs），
+# 所以显式打开 TUI 与 Web —— 否则 `l3d --gui` / `l3d --tui` 会变成未知参数。
+lilyco = { git = "https://github.com/lilyco-42/lilyco", rev = "9a19ba938b48e35e558c2fa7f87290a328562715", features = ["tui", "web"] }

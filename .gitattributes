@@ -1,0 +1,11 @@
+# 统一行尾：CI 的 cargo fmt --check 在 ubuntu 上以 LF 判定
+*.rs   text eol=lf
+*.toml text eol=lf
+*.yml  text eol=lf
+*.yaml text eol=lf
+*.md   text eol=lf
+*.json text eol=lf
+
+# 截图 / 轨迹产物不该入库
+*.png  binary
+*.jsonl binary

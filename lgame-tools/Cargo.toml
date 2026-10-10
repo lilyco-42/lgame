@@ -1,0 +1,19 @@
+[package]
+name = "lgame-tools"
+description = "lgame 的 lilyco 工具层：observe / act / step / run / targets / doctor —— 一个 struct 出 CLI/TUI/Web/MCP 四端。"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+homepage.workspace = true
+authors.workspace = true
+readme = "../README.md"
+keywords = ["ai", "agent", "game", "mcp", "lilyco"]
+categories = ["games", "command-line-utilities"]
+
+[dependencies]
+lilyco = { workspace = true }
+lgame-core = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }

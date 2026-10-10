@@ -1,0 +1,22 @@
+[package]
+name = "l2d"
+description = "AI 驱动 2D 游戏角色（八方向移动 + 跳跃/攻击）的 CLI / TUI / Web / MCP —— lgame 中间层的 2D 躯体档位。"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+homepage.workspace = true
+authors.workspace = true
+readme = "../README.md"
+keywords = ["ai", "agent", "game", "mcp", "platformer"]
+categories = ["games", "command-line-utilities"]
+
+[[bin]]
+name = "l2d"
+path = "src/main.rs"
+
+[dependencies]
+# 只依赖工具层：main.rs 就一行 `lgame_tools::run_binary("l2d", "2d")`。
+# lilyco / lgame-core 由 lgame-tools 透出，这里不需要直接依赖。
+lgame-tools = { workspace = true }

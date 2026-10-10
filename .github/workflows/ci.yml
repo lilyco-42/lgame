@@ -1,0 +1,77 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  pull_request:
+  workflow_dispatch:
+
+env:
+  CARGO_TERM_COLOR: always
+  RUST_BACKTRACE: 1
+
+jobs:
+  # 组织级架构守则（git 依赖锁 rev / 大文件不入库）—— reusable workflow
+  hygiene:
+    name: hygiene (架构守则)
+    uses: lilyco-42/.github/.github/workflows/lyco-hygiene.yml@main
+
+  # 格式：只读源码，不需要系统依赖
+  fmt:
+    name: fmt
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install rustfmt
+        run: rustup component add rustfmt
+      - name: cargo fmt --check
+        run: cargo fmt --all -- --check
+
+  # 编译 + 测试：真正的闸门。Windows 是游戏的主战场，Linux 验证跨平台声明。
+  test:
+    name: test (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, ubuntu-latest]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Linux system deps (xcap / enigo)
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            pkg-config libclang-dev \
+            libxcb1-dev libxcb-randr0-dev libxcb-shm0-dev libxcb-xfixes0-dev \
+            libxrandr-dev libdbus-1-dev \
+            libegl-dev libwayland-dev libpipewire-0.3-dev
+
+      - name: cargo test --workspace
+        run: cargo test --workspace
+
+      - name: cargo build --workspace --release
+        run: cargo build --workspace --release
+
+  # clippy 暂时只报不拦：本仓库在无法本地编译的环境下写成，
+  # 先让它把警告列进日志，清干净之后再去掉 continue-on-error。
+  clippy:
+    name: clippy (advisory)
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Linux system deps (xcap / enigo)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            pkg-config libclang-dev \
+            libxcb1-dev libxcb-randr0-dev libxcb-shm0-dev libxcb-xfixes0-dev \
+            libxrandr-dev libdbus-1-dev \
+            libegl-dev libwayland-dev libpipewire-0.3-dev
+      - name: Install clippy
+        run: rustup component add clippy
+      - name: cargo clippy --workspace --all-targets
+        run: cargo clippy --workspace --all-targets -- -D warnings
