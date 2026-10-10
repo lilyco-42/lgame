@@ -55,12 +55,15 @@ jobs:
       - name: cargo build --workspace --release
         run: cargo build --workspace --release
 
-  # clippy 暂时只报不拦：本仓库在无法本地编译的环境下写成，
-  # 先让它把警告列进日志，清干净之后再去掉 continue-on-error。
+  # clippy：与 test 同级闸门（`-D warnings`）。
+  #
+  # 曾经是 `continue-on-error: true` 的「仅告警」——因为本仓库在无法本地编译的
+  # 环境里写成，先让 clippy 把告警列进日志。首次跑通后（run 38071527263）
+  # clippy 在 `-D warnings` 下**零告警**，就没有理由再让它当摆设了。
+  # 以后它红了就是真问题。
   clippy:
-    name: clippy (advisory)
+    name: clippy
     runs-on: ubuntu-latest
-    continue-on-error: true
     steps:
       - uses: actions/checkout@v4
       - name: Install Linux system deps (xcap / enigo)
